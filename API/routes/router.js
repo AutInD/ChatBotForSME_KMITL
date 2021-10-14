@@ -11,7 +11,7 @@ router.get("/test",(req,res,next )=>{
 
     return res.send({
       error: true,
-      message: "no routes" })
+      message: "no route" })
   
     })
 
