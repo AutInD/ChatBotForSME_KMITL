@@ -1,43 +1,43 @@
-
-<script>
-import Sidebar from '@/components/sidebar/Sidebar.vue'
-import { sidebarWidth } from '@/components/sidebar/state'
-
-export default {
-  components: { Sidebar },
-  setup() {
-    return { sidebarWidth }
-  }
-}
-
-</script>
-
 <template>
-  <Sidebar />
-  <div :style="{ 'margin-left': sidebarWidth }">
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app color="#FFCDD2" dark>
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src=""
+          transition="scale-transition"
+          width="40"
+        />
+
+      </div>
+      
+      <v-spacer></v-spacer>
+
+      <v-btn
+        href=""
+        target=""
+        text
+      >
+        <span class="mr-2">Latest Release</span>
+        <v-icon>mdi-account-arrow-right-outline</v-icon>
+      </v-btn>
+      
+    </v-app-bar>
+
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+export default {
+  name: "App",
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data: () => ({
+    //
+  }),
+};
+</script>
