@@ -33,7 +33,7 @@ module.exports = {
             req.userData = decoded;
             next();
         }   catch(err){
-            throw err;
+            
             return res.status(400).send({
                 message: "Your session is not valid!",
             })

@@ -3,7 +3,6 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
-
 const db = require("../config/db.js");
 const userMiddleware = require("../middleware/users.js")
 
@@ -116,11 +115,11 @@ router.post("/login", (req, res, next) => {
       );
     });
 
-
+    
 
 // http://localhost:3000/api/secret-route
 router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
-    console.log("req.userData");
+    console.log(req.userData);
     res.send("This is secret content");
 });
 
@@ -132,14 +131,58 @@ router.get("/product",(req,res,next)=>{
       })
   })
 
+  router.get("/product/:id",(req,res)=>{
+    db.query("SELECT * FROM product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
+      if(error) res.send({error:true,message:error})
+      res.send({error:false,data:results})
+      })
+
+  })
+
+  //Delete Product
+  router.delete("/product/:id",(req,res)=>{
+    db.query("DELETE FROM product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
+      if(error) 
+
+        res.json({massage:"Error"})
+          else
+            res.json({massage:"Success"})
+      })
+  })
+  //API Add product
+  router.post("/product",(req,res)=>{
+    db.query(`
+      INSERT INTO product(Product_Name, Product_Count, Product_Expire, Product_Cost, Product_Detail, Product_Picture) VALUES 
+    (${db.escape(req.body.Product_Name)},
+      ${db.escape(req.body.Product_Count)},
+      ${db.escape(req.body.Product_Expire)},
+      ${db.escape(req.body.Product_Cost)},
+      ${db.escape(req.body.Product_Detail)},
+      ${db.escape(req.body.Product_Picture)} )`
+        , (err, result) => {
+          if (err) {
+            throw err;
+            return res.status(400).send({
+              msg: err
+            });
+          }
+
+          return res.status(201).send({
+            msg: 'Add product successfully !'
+          });
+
+        }
+    );
+
+
+  })
+
   router.get("/user",(req,res,next)=>{
     db.query("SELECT * FROM user",[],(error,results,fields)=>{
       if(error) res.send({error:true,message:error})
       res.send({error:false,data:results})
       })
   })
-
-
 
 
 
