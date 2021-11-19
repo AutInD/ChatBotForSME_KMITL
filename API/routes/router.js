@@ -5,14 +5,58 @@ const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const db = require("../config/db.js");
 const userMiddleware = require("../middleware/users.js")
+const multer = require("multer")
+const fileUpload = require("express-fileupload")
+const path = require("path");
+const util = require('util');
 
-router.get("/test",(req,res,next )=>{
 
-    return res.send({
-      error: true,
-      message: "no route" })
+//const app = express();
+router.use(express.json());
+router.use(express.urlencoded({extended: true}));
+router.use(express.json());
+router.use(fileUpload());
+
+//router.use(express.static("./routes/public"));
+
+router.get("/upload", (req, res)=>{
+  res.send("hello")
+})
+router.post("/upload", async (req, res) => {
+  try {
+    const file = req.files.file;
+    const fileName = file.name;
+    const size = file.data.length;
+    const extension = path.extname(fileName);
   
+    const allowedExtensions = /png|jpeg|jpg|gif/;
+  
+    if (!allowedExtensions.test(extension)) throw "Unsupported extension!";
+    if (size > 5000000) throw "File must be less than SMB"
+
+    const md5 = file.md5;
+    const URL = "/product_img/" + md5 + extension;
+
+    await util.promisify(file.mv)("./upload"+ URL);
+    
+    res.json ({
+      message: "File uploaded successfully!!!",
+      url: URL,
     })
+
+
+  }catch(err){
+    console.log(err);
+    res.status(500).json({
+
+    });
+  }
+  
+
+
+});
+
+
 
 
 // http://localhost:3000/api/sign-up
@@ -22,6 +66,9 @@ router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
         req.body.username
       )});`,
       (err, result) => {
+        
+        console.log(result)
+
         if (result.length) {
           return res.status(409).send({
             msg: 'This username is already in use!'
@@ -115,8 +162,6 @@ router.post("/login", (req, res, next) => {
       );
     });
 
-    
-
 // http://localhost:3000/api/secret-route
 router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
     console.log(req.userData);
@@ -124,13 +169,15 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
 });
 
 // http://localhost:3000/api/product
-router.get("/product",(req,res,next)=>{
+  router.get("/product",(req,res,next)=>{
     db.query("SELECT * FROM product",[],(error,results,fields)=>{
       if(error) res.send({error:true,message:error})
       res.send({error:false,data:results})
       })
   })
 
+
+//
   router.get("/product/:id",(req,res)=>{
     db.query("SELECT * FROM product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
       if(error) res.send({error:true,message:error})
@@ -149,33 +196,100 @@ router.get("/product",(req,res,next)=>{
             res.json({massage:"Success"})
       })
   })
+
   //API Add product
-  router.post("/product",(req,res)=>{
-    db.query(`
-      INSERT INTO product(Product_Name, Product_Count, Product_Expire, Product_Cost, Product_Detail, Product_Picture) VALUES 
-    (${db.escape(req.body.Product_Name)},
-      ${db.escape(req.body.Product_Count)},
-      ${db.escape(req.body.Product_Expire)},
-      ${db.escape(req.body.Product_Cost)},
-      ${db.escape(req.body.Product_Detail)},
-      ${db.escape(req.body.Product_Picture)} )`
-        , (err, result) => {
-          if (err) {
-            throw err;
-            return res.status(400).send({
-              msg: err
-            });
+  /*  
+  const storage = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        callBack(null, './upload/product_img/')     // './public/images/' directory name where save the file
+    },
+    filename: (req, file, callBack) => {
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})  */
+
+  const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        cb(null, './upload/product_img') // ตำแหน่งจัดเก็บไฟล์
+    },
+    filename:function(req,file,cb){
+        cb(null,Date.now()+".jpg") //แปลงชื่อไฟล์ กันซ้ำ
+    }
+  })
+
+  const upload = multer({
+    storage:storage
+  })
+
+
+  router.post("/product_add",upload.single("Product_Picture"),(req,res,err)=>{
+
+    
+    
+    let Product_Name = req.body.Product_Name;
+    let Product_Count = req.body.Product_Count;
+    let Product_Expire = req.body.Product_Expire;
+    let Product_Cost = req.body.Product_Cost;
+    let Product_Detail = req.body.Product_Detail;
+    let Product_Picture = req.file.filename; //'http://localhost:3000/api/upload/product_img' + 
+    //let Product_Picture = req.file.filename;
+    //var imgsrc = 'http://localhost:3000/api' + req.body.filename;
+    let errors = false;
+
+    if(!errors){
+      let dataProduct = {
+        Product_Name: Product_Name,
+        Product_Count: Product_Count,
+        Product_Expire: Product_Expire,
+        Product_Cost: Product_Cost,
+        Product_Detail: Product_Detail,
+        Product_Picture: Product_Picture,
+        //Product_Picture: Product_Picture,
+        
+      }
+        
+        db.query('INSERT INTO product SET ?',[dataProduct],(err, result) => {
+          if(!err){
+              res.send('Add Product successful');
+          } else {
+              console.log(err)
           }
-
-          return res.status(201).send({
-            msg: 'Add product successfully !'
-          });
-
-        }
-    );
+        
+      })
+    }
 
 
   })
+
+  //API Update product
+  router.post("/product/:id",(req,res,next)=>{
+    let id = req.params.id;
+    let Product_Name = req.body.Product_Name;
+    let Product_Count = req.body.Product_Count;
+    let Product_Expire = req.body.Product_Expire;
+    let Product_Cost = req.body.Product_Cost;
+    let Product_Detail = req.body.Product_Detail;
+    let Product_Picture = req.body.Product_Picture;
+    let errors = false;
+
+    if(!errors) {
+
+    let form_product = {
+        Product_Name: Product_Name,
+        Product_Count: Product_Count,
+        Product_Expire: Product_Expire,
+        Product_Cost: Product_Cost,
+        Product_Detail: Product_Detail,
+        Product_Picture: Product_Picture,
+      }
+      db.query('UPDATE product SET ? WHERE idProduct = ' + id, form_product, (error,results)=>{
+          if(error) res.send({error:true,message:error})
+          res.send({error:false,data:results})
+        })
+      }
+      
+  })
+  
 
   router.get("/user",(req,res,next)=>{
     db.query("SELECT * FROM user",[],(error,results,fields)=>{

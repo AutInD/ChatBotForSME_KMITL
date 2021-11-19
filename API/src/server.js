@@ -2,6 +2,7 @@ const { request } = require('express')
 const express = require('express')
 const bodyParser = require("body-parser")
 const mysql = require("mysql")
+
 const port = 3001
 
 const dbConn = mysql.createConnection({
@@ -30,6 +31,7 @@ router.get("/",(req,res,next )=>{
       })
   })
 
+  
   router.get("/user",(req,res,next)=>{
     dbConn.query("SELECT * FROM user",[],(error,results,fields)=>{
       if(error) res.send({error:true,message:error})
