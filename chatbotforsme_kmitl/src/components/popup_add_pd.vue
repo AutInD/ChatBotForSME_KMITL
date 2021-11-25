@@ -48,11 +48,12 @@
                 <template>   
                     <v-text-field v-model="form.Product_Cost" label="ราคา" outlined></v-text-field>
                     <v-textarea v-model="form.Product_Detail" label="รายละเอียด" outlined></v-textarea>
-                    <!--<v-file-input v-model="form.Product_Picture"  label="รูปสินค้า" dense outlined></v-file-input>-->
-                    
+                    <v-file-input v-model="form.Product_Picture" label="รูปสินค้า" dense outlined></v-file-input>      
+
                     <v-row align="center" justify="space-around">                
                         <v-btn event v-on:click="submit()" center class="px-12" color="success">บันทึกข้อมูล</v-btn>
                     </v-row>
+                    
                 </template>    
                 </v-form>
             </v-card-text>   
@@ -67,27 +68,27 @@ import Swal from 'sweetalert2'
 Vue.use(VueAxios,axios,Swal)
 export default {
 
-    
-
     data() {
         
         return {
-
+            
             form: {
+                
                 Product_Name: '',
                 Product_Count: '',
                 Product_Expire: '',
                 Product_Cost: '',
                 Product_Detail: '',
                 Product_Picture: '',
+
             }
         }
     },
 
     methods: {
         
-
         getData()
+        
     {
       axios.get('http://localhost:3000/api/product').then((result)=>{
         console.warn(result)
@@ -96,7 +97,13 @@ export default {
     },
 
         submit(){
-            axios.post('http://localhost:3000/api/product_add',this.form).then(() => {
+         
+            axios.post('http://localhost:3000/api/product_add',this.form,{ 
+
+                    headers: { 
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(() => {
 
                 Swal.fire({
                 

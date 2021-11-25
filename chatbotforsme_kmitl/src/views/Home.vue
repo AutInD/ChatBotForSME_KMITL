@@ -45,31 +45,40 @@
       </thead>
       <tbody>
         <tr
-         v-for="item in products" v-bind:key="item.idProduct"
+           v-for="item in products" v-bind:key="item.idProduct"
+         
         >
+        
+
           <td>{{ item.Product_Name }}</td>
           <td>{{ item.Product_Count }}</td>
-          <td>{{item.Product_Expire}}</td>
-          <td>{{item.Product_Cost}}</td>
-          <td>{{item.Product_Detail}}</td>
+          <td>{{ item.Product_Expire }}</td>
+          <td>{{ item.Product_Cost }}</td>
+          <td>{{ item.Product_Detail }}</td>
           <td>
-
-          </td>
-          <!--{{item.Product_Picture}}-->
-          <td> <v-img
+            
+            <img src="" alt="">
+            <v-img
+                  :src="'http://localhost:3000'+item.Product_Picture"
                   contain
                   max-height="150"
                   max-width="120"
-                  src="https://th-test-11.slatic.net/p/a85fb067cd4f1b4b2e28bb1bb15597cd.jpg"
-                ></v-img></td>
-
-          <td>
-           <upDate/>
+                  
+                  
+                ></v-img>
+                
+          </td>
+          <!--{{item.Product_Picture}}-->
+          <td> 
+            <upDate/>
            <v-btn class="button"
                 color="red"
                 elevation="2"
                 v-on:click="deleteProduct(item.idProduct)"
-              >ลบ</v-btn></td>
+            >ลบ</v-btn>
+          </td>
+         
+           
           
         </tr>
       </tbody>
