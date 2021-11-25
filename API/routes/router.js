@@ -5,16 +5,13 @@ const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const db = require("../config/db.js");
 const userMiddleware = require("../middleware/users.js")
-const multer = require("multer")
+
 const fileUpload = require("express-fileupload")
 const path = require("path");
 const util = require('util');
 
 
 //const app = express();
-router.use(express.json());
-router.use(express.urlencoded({extended: true}));
-router.use(express.json());
 router.use(fileUpload());
 
 //router.use(express.static("./routes/public"));
@@ -170,7 +167,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
 
 // http://localhost:3000/api/product
   router.get("/product",(req,res,next)=>{
-    db.query("SELECT * FROM product",[],(error,results,fields)=>{
+    db.query("SELECT * FROM Product",[],(error,results,fields)=>{
       if(error) res.send({error:true,message:error})
       res.send({error:false,data:results})
       })
@@ -179,7 +176,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
 
 //
   router.get("/product/:id",(req,res)=>{
-    db.query("SELECT * FROM product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
+    db.query("SELECT * FROM Product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
       if(error) res.send({error:true,message:error})
       res.send({error:false,data:results})
       })
@@ -188,7 +185,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
 
   //Delete Product
   router.delete("/product/:id",(req,res)=>{
-    db.query("DELETE FROM product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
+    db.query("DELETE FROM Product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
       if(error) 
 
         res.json({massage:"Error"})
@@ -208,30 +205,14 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
     }
 })  */
 
-  const storage = multer.diskStorage({
-    destination:function(req,file,cb){
-        cb(null, './upload/product_img') // ตำแหน่งจัดเก็บไฟล์
-    },
-    filename:function(req,file,cb){
-        cb(null,Date.now()+".jpg") //แปลงชื่อไฟล์ กันซ้ำ
-    }
-  })
+  router.post("/product_add",(req,res,err)=>{
 
-  const upload = multer({
-    storage:storage
-  })
-
-
-  router.post("/product_add",upload.single("Product_Picture"),(req,res,err)=>{
-
-    
-    
     let Product_Name = req.body.Product_Name;
     let Product_Count = req.body.Product_Count;
     let Product_Expire = req.body.Product_Expire;
     let Product_Cost = req.body.Product_Cost;
     let Product_Detail = req.body.Product_Detail;
-    let Product_Picture = req.file.filename; //'http://localhost:3000/api/upload/product_img' + 
+    let Product_Picture = req.body.Product_Picture; 
     //let Product_Picture = req.file.filename;
     //var imgsrc = 'http://localhost:3000/api' + req.body.filename;
     let errors = false;
@@ -244,11 +225,11 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
         Product_Cost: Product_Cost,
         Product_Detail: Product_Detail,
         Product_Picture: Product_Picture,
-        //Product_Picture: Product_Picture,
         
       }
+      
         
-        db.query('INSERT INTO product SET ?',[dataProduct],(err, result) => {
+        db.query('INSERT INTO Product SET ?',[dataProduct],(err, result) => {
           if(!err){
               res.send('Add Product successful');
           } else {
@@ -257,7 +238,6 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
         
       })
     }
-
 
   })
 
