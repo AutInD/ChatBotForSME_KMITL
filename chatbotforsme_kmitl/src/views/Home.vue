@@ -46,10 +46,9 @@
       <tbody>
         <tr
            v-for="item in products" v-bind:key="item.idProduct"
-         
+       
         >
         
-
           <td>{{ item.Product_Name }}</td>
           <td>{{ item.Product_Count }}</td>
           <td>{{ item.Product_Expire }}</td>
@@ -128,7 +127,6 @@ export default {
       })
     },
     
-
     deleteProduct(idProduct)
     {
          //axios.delete('http://localhost:3000/api/product/'+idProduct).then(()=>{
@@ -150,7 +148,7 @@ export default {
               ).then(()=>{
                 axios.delete('http://localhost:3000/api/product/'+idProduct)
                 this.getData()
-              })
+              }).then(this.getData())
             }       
           this.getData()
           
@@ -158,16 +156,9 @@ export default {
       }
     },
     
-
-
-  
-  
-
   mounted() {
     this.getData()
     
-    
-
   },
 
   

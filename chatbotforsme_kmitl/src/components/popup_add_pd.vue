@@ -48,7 +48,8 @@
                 <template>   
                     <v-text-field v-model="form.Product_Cost" label="ราคา" outlined></v-text-field>
                     <v-textarea v-model="form.Product_Detail" label="รายละเอียด" outlined></v-textarea>
-                    <v-file-input v-model="form.Product_Picture" label="รูปสินค้า" dense outlined></v-file-input>      
+
+                    <v-file-input id="file" ref="file" v-model="Product_Picture" label="รูปสินค้า" dense outlined></v-file-input>    
 
                     <v-row align="center" justify="space-around">                
                         <v-btn event v-on:click="submit()" center class="px-12" color="success">บันทึกข้อมูล</v-btn>
@@ -67,7 +68,7 @@ import VueAxios from 'vue-axios'
 import Swal from 'sweetalert2'
 Vue.use(VueAxios,axios,Swal)
 export default {
-
+    
     data() {
         
         return {
@@ -79,9 +80,12 @@ export default {
                 Product_Expire: '',
                 Product_Cost: '',
                 Product_Detail: '',
-                Product_Picture: '',
-
-            }
+                
+            },
+            Product_Picture: [],
+                
+                
+            
         }
     },
 
@@ -96,30 +100,43 @@ export default {
       })
     },
 
-        submit(){
-         
-            axios.post('http://localhost:3000/api/product_add',this.form,{ 
+        submit: function(){
+
+            console.log(this.Product_Picture);
+
+            let formData = new FormData();
+            formData.append('Product_Name',this.form.Product_Name)
+            formData.append('Product_Count',this.form.Product_Count)
+            formData.append('Product_Expire',this.form.Product_Expire)
+            formData.append('Product_Cost',this.form.Product_Cost)
+            formData.append('Product_Detail',this.form.Product_Detail)
+            formData.append('Product_Picture',this.Product_Picture)
+            
+            
+            axios.post('http://localhost:3000/create_product/',formData,{ 
 
                     headers: { 
                         'Content-Type': 'multipart/form-data'
                     }
+
                 }).then(() => {
 
                 Swal.fire({
                 
                 icon: 'success',
-                title: 'Your work has been saved',
+                title: 'บันทึกสำเร็จ',
                 showConfirmButton: false,
-                timer: 4000
+                timer: 1000
                 
                 })
-            }).then(((window.location.reload())))
-            
-
-
-                    
+            }).then(()=> {
+                window.location.reload()
+            })
+             
             .catch(error => console.log(error))
-        }
+        },
+       
+     
     
 
 
