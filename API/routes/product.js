@@ -47,8 +47,7 @@ router.get("/product_add1", (req, res)=>{
         Product_Picture: Product_Picture,
       }
 
-
-        db.query('INSERT INTO product SET ?',[dataProduct],(err, result) => {
+          db.query('INSERT INTO product SET ?',[dataProduct],(err, result) => {
           if(!err){
               res.send('Add Product successful');
           } else {

@@ -194,7 +194,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
       })
   })
 
-  //API Add product
+    //API Add product
   /*  
   const storage = multer.diskStorage({
     destination: (req, file, callBack) => {
@@ -262,7 +262,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
         Product_Detail: Product_Detail,
         Product_Picture: Product_Picture,
       }
-      db.query('UPDATE product SET ? WHERE idProduct = ' + id, form_product, (error,results)=>{
+      db.query('UPDATE Product SET ? WHERE idProduct = ' + id, form_product, (error,results)=>{
           if(error) res.send({error:true,message:error})
           res.send({error:false,data:results})
         })
@@ -270,6 +270,12 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
       
   })
   
+  router.get("/order",(req,res,next)=>{
+    db.query("SELECT * FROM ChatBotForSMEsDB.Order",[],(error,results,fields)=>{
+      if(error) res.send({error:true,message:error})
+      res.send({error:false,data:results})
+      })
+  })
 
   router.get("/user",(req,res,next)=>{
     db.query("SELECT * FROM user",[],(error,results,fields)=>{
@@ -277,7 +283,6 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
       res.send({error:false,data:results})
       })
   })
-
-
+  
 
 module.exports = router;
