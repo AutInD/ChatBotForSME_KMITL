@@ -127,6 +127,8 @@ export default {
       })
     },
     
+   
+    
     deleteProduct(idProduct)
     {
          //axios.delete('http://localhost:3000/api/product/'+idProduct).then(()=>{

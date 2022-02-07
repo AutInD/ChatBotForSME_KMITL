@@ -5,7 +5,7 @@
                 small absolute buttom right fab
                 color="red lighten-2"
                 dark    
-                slot="activator"
+               
                 v-on="on" 
                 >
                 <v-icon>mdi-plus</v-icon>
@@ -99,6 +99,7 @@ export default {
         this.products=result.data.data
       })
     },
+    
 
         submit: function(){
 

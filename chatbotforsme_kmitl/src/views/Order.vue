@@ -67,7 +67,7 @@
                 <v-btn class="button"
                 color="blue"
                 elevation="2"
-               
+                :to="'/orderdetails/'+item.id"
                 >รายละเอียด</v-btn>
                 </td>
                 
@@ -97,9 +97,18 @@ export default {
     data() {
     
     return {
-      orders:null,
-      
-      }
+
+            orders: {
+                id: '',
+                Order_CountProduct: '',
+                Order_TotalCost: '',
+                Product_DeliveryType: '',
+                Product_Status: '',
+                Product_CusName: '',
+                Product_CusTel: '',
+                Product_Add: '',
+            }
+        }
   },
     methods: {
 

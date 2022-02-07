@@ -3,7 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Sales from "../views/Sales.vue";
 import Order from "../views/Order.vue";
-
+import popup_upd_pd from "../components/popup_upd_pd.vue"
+import OrderDetails from "../views/OrderDetails.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -11,6 +12,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/api/product/:id",
+    name: "popup_upd_pd",
+    component: popup_upd_pd,
   },
   {
     path: "/Sales",
@@ -21,6 +27,11 @@ const routes = [
     path: "/Order",
     name: "Order",
     component: Order,
+  },
+  {
+    path: "/orderdetails/:id",
+    name: "OrderDetails",
+    component: OrderDetails,
   },
  
   {
