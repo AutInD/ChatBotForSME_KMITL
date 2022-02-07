@@ -182,16 +182,23 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
       })
 
   })
-
   //Delete Product
   router.delete("/product/:id",(req,res)=>{
     db.query("DELETE FROM Product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
       if(error) 
-
+      
         res.json({massage:"Error"})
           else
             res.json({massage:"Success"})
       })
+  })
+
+  router.get("/orderdetails/:id",(req,res)=>{
+    db.query("SELECT * FROM ChatBotForSMEsDB.Order WHERE id = ?",[req.params.id],(error,results,fields)=>{
+      if(error) res.send({error:true,message:error})
+      res.send({error:false,data:results})
+      })
+
   })
 
     //API Add product
