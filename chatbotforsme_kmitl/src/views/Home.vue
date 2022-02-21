@@ -50,10 +50,13 @@
         >
         
           <td>{{ item.Product_Name }}</td>
-          <td>{{ item.Product_Count }}</td>
+          <td v-if="item.Product_Count == 0" class="red--text" style="width:100px;"> หมดสต็อก </td>
+          <td v-else class="">{{ item.Product_Count }}</td>
+           
+
           <td>{{ item.Product_Expire }}</td>
           <td>{{ item.Product_Cost }}</td>
-          <td>{{ item.Product_Detail }}</td>
+          <td style="width:180px;">{{ item.Product_Detail }}</td>
           <td>
             
             <img src="" alt="">
@@ -169,11 +172,13 @@ export default {
 };
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;400;500&display=swap');
   .product {
     margin: 2% 5% 5% 5%;
   }
   .main {
     margin: 2% 2%;
+    font-family: 'Prompt', sans-serif;
   }
   .button {
     margin: 5px;

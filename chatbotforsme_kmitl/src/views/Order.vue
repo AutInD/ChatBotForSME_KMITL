@@ -11,13 +11,11 @@
       <thead>
         <tr>
           <th class="text-left">
-            Order ID.
+            รหัสคำสั่งซื้อ
           </th>
-          <th class="text-left">
-            จำนวนสินค้าที่สั่งซื้อ
-          </th>
+          
           <th class="">
-            ราคารวม
+            ยอด
           </th>
           <th class="">
             เวลาที่สั่งซื้อ
@@ -25,24 +23,16 @@
           <th class="">
             สถานะการชำระเงิน
           </th>
-          <th class="text-center">
+          <th class="">
             ชื่อลูกค้า
           </th>
-          <th class="text-center">
+          <th class="">
             เบอร์โทร
           </th>
-          <th>
-            ที่อยู่              
+          <th class="">
+            Action
           </th>
-          <th>
-            การจัดส่ง              
-          </th>
-          <th>
-            Tracking              
-          </th>
-          <th>
-                       
-          </th>
+        
         </tr>
 
         </thead>
@@ -51,15 +41,19 @@
                 v-for="item in orders" v-bind:key="item.id"
             >
                 <td>{{ item.id }}</td>
-                <td>{{ item.Order_CountProduct }}</td>
-                <td>{{ item.Order_TotalCost }}</td>
+                <td>฿ {{ item.Order_TotalCost }}</td>
                 <td>{{ item.Order_Date }}</td>
-                <td class="red--text">{{ item.Order_Status }}</td>
+                
+                <td v-if="item.Order_Status === 'ชำระเงินแล้ว' " class='green--text'> {{ item.Order_Status }}</td>
+                <td v-if="item.Order_Status === 'รอการตรวจสอบ' " class='blue--text'> {{ item.Order_Status }}</td>
+                
+                <td v-if="item.Order_Status === 'ยังไม่ได้ชำระเงิน'" class="red--text"> {{ item.Order_Status }} </td>
+                
                 <td>{{ item.Order_CusName }}</td>
                 <td>{{ item.Order_CusTel }}</td>
-                <td>{{ item.Order_CusAdd }}</td>
-                <td>{{ item.Order_DeliveryType }}</td>
-                <td>{{ item.Order_Tracking }}</td>
+               
+            
+                
                 <!--<td>{{ item.Payment_idPayment }}</td>-->
                 <!--<td>{{ item.Payment_idProduct }}</td>-->
                 <td> 
@@ -95,6 +89,8 @@ export default {
 
     },
     data() {
+      
+  
     
     return {
 
@@ -130,17 +126,26 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;400;500&display=swap');
     .order {
-    margin: 2% 5% 5% 5%;
+      margin: 2% 5% 5% 5%;
   }
     .main {
-    margin: 2% 2%;
+      font-family: 'Prompt', sans-serif;
+      margin: 2% 2%;
   }
     .button {
-    margin: 5px;
+      margin: 5px;
   }
     .subtitle {
-        margin: 2% 2% 2% 2%;
+      margin: 2% 2% 2% 2%;
     }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      background-color: #2196F3;
+      padding: 10px;
+}
 
 </style>

@@ -1,7 +1,8 @@
 <template>
     <v-app>
+    <div class="no-print">
         <v-app-bar color="gray" dark app class="line">
-            <div>
+            <div class="">
                 <v-toolbar-title class="text-uppercase red--text">
                     <span class="font-weight-light">Chatbot For</span>
                     <span> SME</span>
@@ -9,21 +10,17 @@
             </div>
             <v-spacer></v-spacer>
                 
-                    <v-btn
-                        href=""
-                        target=""
-                        text
-                    >
-        <span color="black" class="mr-2">Log out</span>
-        <v-icon>mdi-account-arrow-right-outline</v-icon>
-      </v-btn>
-
-            
-            
-            
-            
+         <v-btn
+            href=""
+            target=""
+            text
+         >
+            <span color="black" class="mr-2">Log out</span>
+            <v-icon>mdi-account-arrow-right-outline</v-icon>
+            </v-btn>
         </v-app-bar>
-            
+        </div>
+        <div class="no-print">
         <v-navigation-drawer v-model="darwer" dark app color="#FF5252">
             <v-list flat>
                 <v-list-item class="mb-3">
@@ -78,8 +75,9 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-
+        </div>
         <router-view></router-view>
+        
     </v-app>
 
 </template>
