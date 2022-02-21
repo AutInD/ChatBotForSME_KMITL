@@ -1,8 +1,103 @@
 <template>
+<<<<<<< HEAD
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
+=======
+  <v-app>
+    <v-main class="main">
+      <h1>จัดการสินค้า</h1> 
+      <v-card class="product">
+        
+         
+          <v-card>
+            <v-simple-table>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">
+            Name
+          </th>
+          <th class="text-left">
+            Count
+          </th>
+          <th class="">
+            Expire
+          </th>
+          <th class="">
+            Cost
+          </th>
+          <th class="">
+            Detail
+          </th>
+          <th class="text-center">
+            Picture
+          </th>
+          <th class="text-center">
+            Action
+          </th>
+          <th>
+              <Popup/>
+              
+          </th>
+          
+        </tr>
+        <!--<v-btn color="red" dark small absolute buttom right fab>
+                    <v-icon>mdi-plus</v-icon>
+                  </v-btn>-->
+                  
+      </thead>
+      <tbody>
+        <tr
+           v-for="item in products" v-bind:key="item.idProduct"
+       
+        >
+        
+          <td>{{ item.Product_Name }}</td>
+          <td v-if="item.Product_Count == 0" class="red--text" style="width:100px;"> หมดสต็อก </td>
+          <td v-else class="">{{ item.Product_Count }}</td>
+           
+
+          <td>{{ item.Product_Expire }}</td>
+          <td>{{ item.Product_Cost }}</td>
+          <td style="width:180px;">{{ item.Product_Detail }}</td>
+          <td>
+            
+            <img src="" alt="">
+            <v-img
+                  :src="'http://localhost:3000'+item.Product_Picture"
+                  contain
+                  max-height="150"
+                  max-width="120"
+                  
+                  
+                ></v-img>
+                
+          </td>
+          <!--{{item.Product_Picture}}-->
+          <td> 
+            <upDate/>
+           <v-btn class="button"
+                color="red"
+                elevation="2"
+                v-on:click="deleteProduct(item.idProduct)"
+            >ลบ</v-btn>
+          </td>
+         
+           
+          
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
+          </v-card>
+          
+        
+      </v-card>
+    </v-main>
+  </v-app>
+>>>>>>> develop
 </template>
 
 <script>
@@ -78,11 +173,16 @@ export default {
 };
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;400;500&display=swap');
   .product {
     margin: 2% 5% 5% 5%;
   }
   .main {
     margin: 2% 2%;
+<<<<<<< HEAD
+>>>>>>> develop
+=======
+    font-family: 'Prompt', sans-serif;
 >>>>>>> develop
   }
 }

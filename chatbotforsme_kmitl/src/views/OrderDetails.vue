@@ -2,26 +2,115 @@
     <v-app>
       
         <v-main class="main">
-         <h1>รายละเอียดคำสั่งซื้อ</h1>
-         <tr v-for="item in orders" v-bind:key="item.id">
-          <v-card class="order">
-            
-            
-            รหัสออเดอร์ : {{item.id}} <br>
-            จำนวนสินค้าในออเดอร์ : {{item.Order_CountProduct}} <br>
-            ราคารวม : {{item.Order_TotalCost}} <br>
-            วันที่รับออเดอร์ : {{item.Order_Date}} <br>
-            รูปแบบการขนส่ง : {{item.Order_DeliveryType}} <br>
-            <p class="danger">สถานะ : {{item.Order_Status}} </p>
-            </v-card>
-         </tr>
+          <div class="no-print" >
+            <h1>รายละเอียดคำสั่งซื้อ </h1>  
+            <div class="cursor-point">
+              <span @click="printWindow()" class="d-flex flex-row-reverse">พิมพ์คำสั่งซื้อ</span>
+            </div>   
+             
           
-            <tr v-for="item in orders" v-bind:key="item.id">
-            <v-card class="order2">
-            ผู้สั่ง : {{item.Order_CusName}} , {{item.Order_CusTel}} <br>
-                  {{item.Order_CusAdd}}
-            </v-card>
-            </tr>
+          
+         <v-card
+          class="text-center"
+          height="70%"
+          elevation="6"
+          text-center
+
+         >
+         <v-toolbar
+      color="grey"
+      dark
+      dense
+      flat
+    >
+    <v-toolbar-title>
+      แจ้งการชำระเงิน
+    </v-toolbar-title>
+
+    </v-toolbar>
+    
+           <div class="" v-for="item in orders" v-bind:key="item.id">            
+                <div class="status">สถานะ : {{item.Order_Status}}</div>
+                <img class="slip" src="../img/testslip.png" alt="" width="220" height="">
+                <v-spacer></v-spacer>
+                
+                  <v-btn color="green" style="margin: 10px;">ยืนยันการชำระเงิน</v-btn>
+                  
+                  <v-btn color="red">ปฎิเสธการชำระเงิน</v-btn>
+          </div>
+         </v-card>
+        </div>
+         
+              <v-spacer></v-spacer>
+
+         <div v-for="item in orders" v-bind:key="item.id">
+           <br>
+          <v-card>
+          <v-toolbar
+            color="white"
+            >
+            <v-toolbar-title class="header-text">คำสั่งซื้อ #{{item.id}}</v-toolbar-title>
+          </v-toolbar>
+          
+          <div class="flex-container">
+            
+            
+            <div class="">
+              
+              <!--จำนวนสินค้าในออเดอร์ : {{item.Order_CountProduct}}<br>-->
+              <table border="0" style="width:100%; ">
+                <h3>สรุปรายการสินค้า</h3>
+              <tr style="border-bottom: 1px solid black">
+                 <td> รายการสินค้า</td>
+                 <td> จำนวน</td>
+                 <td> ราคา</td>
+              </tr>
+              <tr style="">
+                 <td> เห็ดหลินจือ </td>
+                 <td> 2 </td>
+                 <td> 500.- </td>
+              </tr>
+              <tr style="border-bottom: 1px solid black">
+                 <td> ถังเช่าสีทอง </td>
+                 <td> 2 </td>
+                 <td> 500.- </td>
+              </tr>
+              <tr style="font-size: 22px;">
+                 <td> ราคาสุทธิ </td>
+                 <td></td>
+                 <td> {{item.Order_TotalCost}}.-</td>
+              </tr>
+              </table><br>
+                   
+               <template>  
+              
+              </template>  
+            </div>
+            
+            <div class="order2">
+                  ผู้สั่ง : {{item.Order_CusName}} <br> เบอร์โทร : {{item.Order_CusTel}} <br>
+                  {{item.Order_CusAdd}}<br><br>
+                  <v-form>
+                ประเภทการขนส่ง : {{item.Order_DeliveryType}} <br>
+                <div>
+                 Tracking Number : {{ item.Order_Tracking }}
+                </div>
+                <v-text-field hint="สำหรับกรอกเลขพัสดุ" label="Tracking Number : " v-model="orders.Order_Tracking" ></v-text-field>
+                <br>
+                <v-row align="center" justify="space-around">
+                  <v-btn event v-on:click="submit()" center class="px-12" color="success">บันทึกเลขพัสดุ</v-btn>
+                </v-row>
+              </v-form>
+                  
+              </div>            
+          </div>
+          </v-card>
+         </div>
+      
+          
+          
+
+            
           
         </v-main>
      
@@ -41,18 +130,23 @@ export default {
     components: {
 
     },
+   
     data() {
+      
     
       return {
             orders: {
                 id: '',
                 Order_CountProduct: '',
                 Order_TotalCost: '',
-                Product_DeliveryType: '',
-                Product_Status: '',
-                Product_CusName: '',
-                Product_CusTel: '',
-                Product_Add: '',
+                Order_Date: '',
+                Order_DeliveryType: '',
+                Order_Status: '',
+                Order_CusName: '',
+                Order_CusTel: '',
+                Order_CusAdd: '',
+                Order_Tracking: '',
+
             }
         }
   },
@@ -61,33 +155,115 @@ export default {
       
       this.orders=result.data.data   
       
+    },
+    methods: {
+
+      printWindow() {
+        window.print();
+      },
+
+      submit() {
+        
+          let formData = new FormData();
+            formData.append('Order_Tracking',this.orders.Order_Tracking)
+
+        axios.post('http://localhost:3000/api/update_trackingnumber/'+this.$route.params.id,formData,{
+        
+                    headers: { 
+                        'Content-Type': 'multipart/form-data'
+                    }
+          }).then(()=>{
+
+          })
+
+
+        }
+        
     }
+
 }
 
 
 </script>
 
 <style scoped>
-    .order {
-    margin: 2% 5% 5% 5%;
-    font-size: 24px;
-  } 
-    .danger {
-      color: rgb(218, 58, 58);
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;400;500&display=swap');
+
+    .card-outter {
+      padding-bottom: 50px;
+  }
+    
+    
+  
+    .cursor-point {
+      cursor: pointer;
     }
+  
+    .header-text {
+      font-size: 28px;
+     
+  }
+    .order {
+      display: flex;
+      flex-direction: row;
+      margin: 2% 5% 5% 5%;
+      font-size: 22px;
+  }
     .order2 {
       margin: 2% 5% 5% 5%;
+      font-size: 22px;
+    } 
+    .status {
+      display: flex;
+      margin: 2%;
       
-      font-size: 24px;
+      border-radius: 10px;
+      background: #48B2FF;
+      padding: 20px; 
+      width: 270px;
+      height: 70px;
+      font-size: 22px;
+      
     }
+    
     .main {
-    margin: 2% 2%;
-  }
+      margin: 2% 2%;
+      font-family: 'Prompt', sans-serif;
+    }
     .button {
-    margin: 5px;
-  }
+      margin: 5px;
+    }
     .subtitle {
-        margin: 2% 2% 2% 2%;
+      margin: 2% 2% 2% 2%;
+        
+    }
+    .flex-container {
+      display: flex;
+      
+    }
+    
+    .slip {
+      margin: 2%;
+      
+    }
+    .flex-container {
+      display: flex;
+      /*background-color: DodgerBlue;*/
+      flex-direction: row;
+      
+    }
+
+    .flex-container > div {
+      /*background-color: #f1f1f1;*/
+      margin: 10px;
+      padding: 20px;
+      font-size: 18px;
+      height: 2%;
+      width: 650px;
+    }
+
+    .space {
+      padding: 1%;
     }
 
 </style>

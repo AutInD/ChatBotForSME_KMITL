@@ -28,7 +28,7 @@ const routes = [
     component: Home,
   },
   {
-    path: "/api/product/:id",
+    path: "/product/:id",
     name: "popup_upd_pd",
     component: popup_upd_pd,
   },

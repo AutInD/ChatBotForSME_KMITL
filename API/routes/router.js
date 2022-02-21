@@ -172,15 +172,12 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
       res.send({error:false,data:results})
       })
   })
-
-
 //
   router.get("/product/:id",(req,res)=>{
     db.query("SELECT * FROM Product WHERE idProduct = ?",[req.params.id],(error,results,fields)=>{
       if(error) res.send({error:true,message:error})
       res.send({error:false,data:results})
       })
-
   })
   //Delete Product
   router.delete("/product/:id",(req,res)=>{
@@ -234,7 +231,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
         Product_Picture: Product_Picture,
         
       }
-      
+    
         
         db.query('INSERT INTO Product SET ?',[dataProduct],(err, result) => {
           if(!err){
@@ -245,6 +242,23 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
         
       })
     }
+  })
+  //API Update trackingnumber
+  router.post("/update_trackingnumber/:id",(req,res,next)=>{
+   
+    let id = req.params.id;
+    let Order_Tracking = req.body.Order_Tracking;
+
+    console.log(Order_Tracking)
+    
+    
+      //db.query('UPDATE ChatBotForSMEsDB.Order SET ? WHERE id = '+id, form_order,(error,results)=>{
+        db.query("UPDATE ChatBotForSMEsDB.Order SET Order_Tracking = ? WHERE id = ?", [Order_Tracking,id], (error,results)=>{
+          if(error) res.send({error:true,message:error}) 
+          res.send({error:false,data:results})
+          
+        })
+
 
   })
 

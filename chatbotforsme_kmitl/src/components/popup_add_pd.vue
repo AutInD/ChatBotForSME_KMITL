@@ -11,7 +11,7 @@
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
         </template>
-
+        <div class="main">
         <v-card>
             <v-card-title>
                 <h2 class="">สร้างสินค้า</h2>
@@ -59,6 +59,7 @@
                 </v-form>
             </v-card-text>   
         </v-card>
+        </div>
     </v-dialog>
 </template>
 <script>
@@ -145,3 +146,16 @@ export default {
     
 }
 </script>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;400;500&display=swap');
+  .product {
+    margin: 2% 5% 5% 5%;
+  }
+  .main {
+    
+    font-family: 'Prompt', sans-serif;
+  }
+  .button {
+    margin: 5px;
+  }
+</style>
