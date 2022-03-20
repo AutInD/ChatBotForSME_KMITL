@@ -222,6 +222,7 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
     let errors = false;
 
     if(!errors){
+
       let dataProduct = {
         Product_Name: Product_Name,
         Product_Count: Product_Count,
@@ -229,7 +230,6 @@ router.get("/secret-route", userMiddleware.isLoggedIn,(req, res, next) => {
         Product_Cost: Product_Cost,
         Product_Detail: Product_Detail,
         Product_Picture: Product_Picture,
-        
       }
     
         
