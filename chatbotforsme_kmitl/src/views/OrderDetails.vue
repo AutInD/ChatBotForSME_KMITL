@@ -29,15 +29,28 @@
 
     </v-toolbar>
     
-           <div class="" v-for="item in orders" v-bind:key="item.id">            
-                <div class="status">สถานะ : {{item.Order_Status}}</div>
+           <div class="" v-for="item in orders" v-bind:key="item.id">
+             <div class="status">
+               <v-chip
+                class="ma-2"
+                x-large
+                :color="getColor(item.Order_Status)"
+                dark
+                >
+                {{ item.Order_Status }}
+                </v-chip>
+             </div>
+                
+                
                 <img class="slip" src="../img/testslip.png" alt="" width="220" height="">
                 <v-spacer></v-spacer>
                 
                   <v-btn color="green" style="margin: 10px;">ยืนยันการชำระเงิน</v-btn>
                   
                   <v-btn color="red">ปฎิเสธการชำระเงิน</v-btn>
+                  
           </div>
+          
          </v-card>
         </div>
          
@@ -56,6 +69,7 @@
             
             
             <div class="">
+              
               
               <!--จำนวนสินค้าในออเดอร์ : {{item.Order_CountProduct}}<br>-->
               <table border="0" style="width:100%; ">
@@ -122,8 +136,9 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import Swal from 'sweetalert2'
 
-Vue.use(VueAxios,axios)
+Vue.use(VueAxios,axios,Swal)
 
 export default {
     name: "orderdetails",
@@ -151,6 +166,7 @@ export default {
         }
   },
      async mounted() {
+
       const result = await axios.get('http://localhost:3000/api/orderdetails/'+this.$route.params.id)   
       
       this.orders=result.data.data   
@@ -158,6 +174,12 @@ export default {
     },
     methods: {
 
+     getColor (Order_Status) {
+        if (Order_Status == "ชำระเงินแล้ว") return 'green'
+        else if (Order_Status == "รอการตรวจสอบ") return 'orange'
+        else return 'red'
+      },
+      
       printWindow() {
         window.print();
       },
@@ -165,7 +187,7 @@ export default {
       submit() {
         
           let formData = new FormData();
-            formData.append('Order_Tracking',this.orders.Order_Tracking)
+          formData.append('Order_Tracking',this.orders.Order_Tracking)
 
         axios.post('http://localhost:3000/api/update_trackingnumber/'+this.$route.params.id,formData,{
         
@@ -174,7 +196,12 @@ export default {
                     }
           }).then(()=>{
 
-          })
+            //swal
+                
+
+          }).then(()=> {
+                window.location.reload()
+            })
 
 
         }
@@ -212,16 +239,17 @@ export default {
     .order2 {
       margin: 2% 5% 5% 5%;
       font-size: 22px;
-    } 
+    }
+     
     .status {
       display: flex;
       margin: 2%;
       
       border-radius: 10px;
-      background: #48B2FF;
+      
       padding: 20px; 
       width: 270px;
-      height: 70px;
+      height: 30px;
       font-size: 22px;
       
     }

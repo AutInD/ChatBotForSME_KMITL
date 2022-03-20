@@ -61,7 +61,7 @@
             
             <img src="" alt="">
             <v-img
-                  :src="'http://localhost:3000'+item.Product_Picture"
+                  :src="'http://localhost:3000/'+item.Product_Picture"
                   contain
                   max-height="150"
                   max-width="120"

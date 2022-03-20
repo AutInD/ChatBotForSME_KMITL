@@ -6,7 +6,15 @@
             <h1>คำสั่งซื้อสินค้า</h1>
             <v-card class="order">
             <v-card>
-            <v-simple-table>
+            <v-data-table
+              dense
+              
+    :headers="headers"
+    :items="orders"
+    item-key="id"
+    class="elevation-1"
+
+            >
     <template v-slot:default>
       <thead>
         <tr>
@@ -66,10 +74,27 @@
                 </td>
                 
             </tr>
-        </tbody>
+          </tbody>
+              </template>
 
+                <template v-slot:item.actions="{ item }">
+                  <v-btn class="button"
+                color="blue"
+                elevation="2"
+                :to="'/orderdetails/'+item.id"
+                >รายละเอียด</v-btn>
                 </template>
-            </v-simple-table>
+
+                <template v-slot:item.Order_Status="{ item }">
+                  <v-chip
+                    :color="getColor(item.Order_Status)"
+                    dark
+                    >
+                    {{ item.Order_Status }}
+                  </v-chip>
+                </template>
+            
+            </v-data-table>
         </v-card>     
       </v-card>
      </v-main>
@@ -94,19 +119,44 @@ export default {
     
     return {
 
-            orders: {
+        
+        headers: [
+        {
+          text: 'รหัสคำสั่งซื้อ',
+          align: 'start',
+          sortable: false,
+          value: 'id',
+          
+        },
+        { text: 'ยอด', value: 'Order_TotalCost' },
+        { text: 'เวลาที่สั่งซื้อ', value: 'Order_Date' },
+        { text: 'สถานะการชำระเงิน', value: 'Order_Status' },
+        { text: 'ชื่อลูกค้า', value: 'Order_CusName', sortable: false},
+        { text: 'เบอร์โทร', value: 'Order_CusTel' ,sortable: false},
+        { text: '', value: 'actions', sortable: false},
+      ],
+        
+            orders: [       
+            {
                 id: '',
                 Order_CountProduct: '',
                 Order_TotalCost: '',
-                Product_DeliveryType: '',
-                Product_Status: '',
-                Product_CusName: '',
-                Product_CusTel: '',
-                Product_Add: '',
+                Order_DeliveryType: '',
+                Order_Status: '',
+                Order_CusName: '',
+                Order_CusTel: '',
+                Order_Add: '',
             }
+          ]
         }
   },
     methods: {
+
+     getColor (Order_Status) {
+        if (Order_Status == "ชำระเงินแล้ว") return 'green'
+        else if (Order_Status == "รอการตรวจสอบ") return 'orange'
+        else return 'red'
+      },
 
     getData()
     {
