@@ -188,6 +188,7 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
        } else if (webhookEvent.postback) {
          handlePostback(senderPsid, webhookEvent.postback);
        }
+
      });
  
      // Returns a '200 OK' response to all requests
@@ -213,9 +214,10 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
       res.send({error:false,data:results})
       let Order_Tracking = req.body.Order_Tracking;
       })
+
      response = {
-       //'text': `You sent the message: '${receivedMessage.text}'. Now send me an attachment!`
-       'text': `เลขพัสดุของท่านคือ : `
+       'text': `You sent the message: '${receivedMessage.text}'. Now send me an attachment!`
+      
        
      };
    } else if (receivedMessage.attachments) {
@@ -253,6 +255,7 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
  function handlePostback(senderPsid, receivedPostback) {
    let response;
  
+
    // Get the payload for the postback
    let payload = receivedPostback.payload;
  
@@ -272,7 +275,7 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
  function callSendAPI(senderPsid, response) {
  
    // The page access token we have generated in your app settings
-   const PAGE_ACCESS_TOKEN = "EAAQZB6Pc5SXYBAIGZBtR53Ed8fUHTrqxlvOHN7IbCWpbR6USwhRj8a6PyXu3svXZCv6a11KZC8vH4iAF45tDwq8luLrls0wy29to5uUfZB1rI4rUdcMNG74lO2xwG2MjFWkKQOSkpeBkIPUryIdRZAhZBC3zFhDdbj5p6BDuK3FkqO7W8ZBB7e72";
+   const PAGE_ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
  
    // Construct the message body
    let requestBody = {
