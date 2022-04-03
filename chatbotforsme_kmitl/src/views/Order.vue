@@ -128,8 +128,8 @@ export default {
           value: 'id',
           
         },
-        { text: 'ยอด', value: 'Order_TotalCost' },
-        { text: 'เวลาที่สั่งซื้อ', value: 'Order_Date' },
+        { text: 'ยอด', value: 'Order_TotalCost', align: 'end'},
+        { text: 'เวลาที่สั่งซื้อ', value: 'Order_Date', align: 'center'},
         { text: 'สถานะการชำระเงิน', value: 'Order_Status' },
         { text: 'ชื่อลูกค้า', value: 'Order_CusName', sortable: false},
         { text: 'เบอร์โทร', value: 'Order_CusTel' ,sortable: false},

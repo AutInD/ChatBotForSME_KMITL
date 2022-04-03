@@ -189,7 +189,7 @@ export default {
           let formData = new FormData();
           formData.append('Order_Tracking',this.orders.Order_Tracking)
 
-        axios.post('http://localhost:3000/api/update_trackingnumber/'+this.$route.params.id,formData,{
+        axios.post('http://localhost:3000/update_trackingnumber/'+this.$route.params.id,formData,{
         
                     headers: { 
                         'Content-Type': 'multipart/form-data'
