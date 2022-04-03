@@ -6,6 +6,7 @@ const fileUpload = require("express-fileupload");
 const db = require("./config/db.js");
 const request = require("request");
 
+
 app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({ extended: true}));
@@ -199,56 +200,72 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
      res.sendStatus(404);
    }
  });
+
+ app.post("/update_trackingnumber/:id",(req,res,next)=>{
+  
+  const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+ 
+  let id = req.params.id;
+  let Order_Tracking = req.body.Order_Tracking;
+  console.log(Order_Tracking)
+  
+      //db.query('UPDATE ChatBotForSMEsDB.Order SET ? WHERE id = '+id, form_order,(error,results)=>{
+      db.query("UPDATE ChatBotForSMEsDB.Order SET Order_Tracking = ? WHERE id = ?", [Order_Tracking,id], (error,results)=>{
+        
+        let requestBody = {
+          "sender": {
+            "id": "110100641400020"
+          },
+          'recipient': {
+            'id': "4296818573720366"
+          },
+          "message": {
+          "text": `เลขพัสดุของท่านคือ : ${Order_Tracking}`
+          }
+        };
+        // Send the HTTP request to the Messenger Platform
+
+        request({
+          'uri': 'https://graph.facebook.com/v2.6/me/messages',
+          'qs': { 'access_token': process.env.PAGE_ACCESS_TOKEN },
+          'method': 'POST',
+          'json': requestBody
+        }, (err, _res, _body) => {
+          if (!err) {
+            console.log('ตอบกลับเลขพัสดุสำเร็จ');
+          } else {
+            console.error('Unable to send message:' + err);
+          }
+        });
+      })
+      
+      
+})
+
  
  // Handles messages events
- function handleMessage(senderPsid, receivedMessage) {
+ function handleMessage(senderPsid, received_message) {
    let response;
- 
+     
+    // Checks if the message contains text
+    if (received_message.text == "ขอเลขพัสดุ") {
 
-   // Checks if the message contains text
-   if (receivedMessage.text == "ส่งเลขพัสดุ") {
-     // Create the payload for a basic text message, which
-     // will be added to the body of your request to the Send API
-     db.query("SELECT * FROM ChatBotForSMEsDB.Order",[],(error,results,fields)=>{
-      if(error) res.send({error:true,message:error})
-      res.send({error:false,data:results})
-      let Order_Tracking = req.body.Order_Tracking;
-      })
+      db.query("SELECT Order_Tracking,Order_SenderID FROM ChatBotForSMEsDB.Order WHERE Order_SenderID = '4296818573720366'",[],(error,results,fields)=>{
 
-     response = {
-       'text': `You sent the message: '${receivedMessage.text}'. Now send me an attachment!`
-      
-       
-     };
-   } else if (receivedMessage.attachments) {
-     // Get the URL of the message attachment
-     let attachmentUrl = receivedMessage.attachments[0].payload.url;
-     response = {
-      'attachment': {
-        'type': 'template',
-        'payload': {
-          'template_type': 'generic',
-          'elements': [{
-            'title': 'Is this the right picture?',
-            'subtitle': 'Tap a button to answer.',
-            'image_url': attachmentUrl,
-            'buttons': [
-              {
-                'type': 'postback',
-                'title': 'ส่งเลขพัสดุ',
-                'payload': 'yes',
-              },
-              
-            ],
-          }]
+        const trackingnumber = results[0].Order_Tracking
+        console.log(trackingnumber)        
+      // Creates the payload for a basic text message, which
+      // will be added to the body of our request to the Send API       
+      response = {
+        //"text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+          "text": `เลขพัสดุของคุณลูกค้าคือ : "${trackingnumber}"`
         }
-      }
+        callSendAPI(senderPsid,response) 
+      })
+    }  
     
-     };
-   }
- 
-   // Send the response message
-   callSendAPI(senderPsid, response);
+    // Sends the response message
+    callSendAPI(senderPsid, response);
  }
  
  // Handles messaging_postbacks events
@@ -275,7 +292,7 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
  function callSendAPI(senderPsid, response) {
  
    // The page access token we have generated in your app settings
-   const PAGE_ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+   const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
  
    // Construct the message body
    let requestBody = {
@@ -284,7 +301,6 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
      },
      'message': response
    };
- 
    // Send the HTTP request to the Messenger Platform
    request({
      'uri': 'https://graph.facebook.com/v2.6/me/messages',
@@ -300,4 +316,5 @@ app.listen(PORT, () => console.log("🚀 Server ready ~~~~ "+ PORT))
    });
  }
  
+
  // listen for requests :)
