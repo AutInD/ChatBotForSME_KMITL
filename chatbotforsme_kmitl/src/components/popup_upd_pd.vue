@@ -1,24 +1,15 @@
 <template>
-    <v-dialog max-width="600px">
-        <template v-slot:activator="{ on }">    
-            <v-btn class="button"
-                color="yellow"
-                elevation="2"
-                v-on="on"
-                @click="getProductById(item.idProduct)"
-                
-              >แก้ไข</v-btn>
-        </template>
-
-        <v-card>
+    <v-app>
+        <v-main class="main">
+        <v-card class="product">
+            <h1>แก้ไขสินค้า</h1>
             <v-card-title>
-                <h2 class="">แก้ไขสินค้า</h2>
-            </v-card-title>  
-            <v-card-text>
-                <div v-for="item in products" v-bind:key="item.idProduct">
 
-                <v-form class="px-3">
-                    <v-text-field v-model="item.idProduct" label="รหัส" outlined></v-text-field>
+            
+            </v-card-title>  
+            <div v-for="item in items" v-bind:key="item.idProduct">
+                <v-form  class="px-3">
+                    <v-text-field disabled v-model="item.idProduct" label="รหัสสินค้า" outlined></v-text-field>
                     <v-text-field v-model="item.Product_Name" label="ชื่อสินค้า" outlined></v-text-field>
                     <v-text-field v-model="item.Product_Count" label="จำนวน" outlined></v-text-field>
                 <v-menu
@@ -49,17 +40,21 @@
                 <template>   
                     <v-text-field v-model="item.Product_Cost" label="ราคา" outlined></v-text-field>
                     <v-textarea v-model="item.Product_Detail" label="รายละเอียด" outlined></v-textarea>
-                    <!--<v-file-input v-model="form.Product_Picture"  label="รูปสินค้า" dense outlined></v-file-input>-->
                     
+                    <!--<v-file-input v-model="form.Product_Picture"  label="รูปสินค้า" dense outlined></v-file-input>-->
                     <v-row align="center" justify="space-around">                
                         <v-btn event v-on:click="submit()" center class="px-12" color="success">บันทึกข้อมูล</v-btn>
                     </v-row>
+                    <v-row>
+
+                    </v-row>
                 </template>    
                 </v-form>
+                
                 </div>
-            </v-card-text>   
-        </v-card>
-    </v-dialog>
+                </v-card>
+        </v-main>
+        </v-app>
 </template>
 <script>
 import Vue from 'vue'
@@ -68,7 +63,10 @@ import VueAxios from 'vue-axios'
 import Swal from 'sweetalert2'
 Vue.use(VueAxios,axios,Swal)
 export default {
+    name: "popup_upd_pd",
+    components: {
 
+    },
     
 
     data() {
@@ -86,19 +84,21 @@ export default {
             }
         }
     },
+    async mounted() {
 
+      const result = await axios.get('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product/'+this.$route.params.id)   
+      this.items=result.data.data   
+      
+    },
    
 
     methods: {
 
-     getProductById(idProduct)
+     getProductById()
     {
         
-      axios.get('http://localhost:3000/api/product/'+idProduct,{
-        
-      }).then((result)=>{
-        
-        console.warn(result.data.data)
+      axios.get('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product').then((result)=>{
+        console.warn(result)
         this.products=result.data.data
        
       })
@@ -106,7 +106,7 @@ export default {
     },
 
         submit(){
-            axios.post('http://localhost:3000/api/product:id',this.form).then(() => {
+            axios.post('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product:id',this.form).then(() => {
 
                 Swal.fire({
                 
@@ -116,17 +116,34 @@ export default {
                 timer: 4000
                 
                 })
-            }).then(((window.location.reload())))
+            }).then()
             
 
 
                     
             .catch(error => console.log(error))
-        }
+        },
     
-
+    mounted() {
+      this.getProductById()
+    },
 
     },
+   
+    
     
 }
 </script>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;400;500&display=swap');
+  .product {
+    margin: 2% 5% 5% 5%;
+  }
+  .main {
+    margin: 2% 2%;
+    font-family: 'Prompt', sans-serif;
+  }
+  .button {
+    margin: 5px;
+  }
+</style>

@@ -14,7 +14,7 @@ const routes = [
     component: Home,
   },
   {
-    path: "/product/:id",
+    path: "/popup_upd_pd/:id",
     name: "popup_upd_pd",
     component: popup_upd_pd,
   },
