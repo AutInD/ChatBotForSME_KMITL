@@ -3,6 +3,16 @@
   <v-app>
     <v-main class="main">
       <h1>จัดการสินค้า</h1>
+      <!-- Messenger ปลั๊กอินแชท Code -->
+      <!-- Messenger ปลั๊กอินแชท Code -->
+    <div id="fb-root"></div>
+
+    <!-- Your ปลั๊กอินแชท code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    
+   
       <v-card class="product">
         <v-card>
           <v-simple-table>
@@ -83,12 +93,18 @@ import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import Popup from "../components/popup_add_pd.vue";
+import VueFbCustomerChat from 'vue-fb-customer-chat'
 //import upDate from '../components/popup_upd_pd.vue'
 import Swal from "sweetalert2";
 import moment from "moment";
 moment.locale("th");
 
 Vue.use(VueAxios, axios, Swal);
+Vue.use(VueFbCustomerChat, {
+  page_id: 110100641400020, //  change 'null' to your Facebook Page ID,
+  theme_color: '#333333', // theme color in HEX
+  locale: 'en_US', // default 'en_US'
+});
 
 export default {
   name: "home",
@@ -142,9 +158,34 @@ export default {
 
   mounted() {
     this.getData();
+    
   },
 };
 </script>
+<script>
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "110100641400020");
+      chatbox.setAttribute("attribution", "biz_inbox");
+</script>
+<script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v13.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/th_TH/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Prompt:wght@200;400;500&display=swap");
 .product {

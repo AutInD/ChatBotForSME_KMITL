@@ -19,9 +19,13 @@ export default {
 
   components: {
     Navbar,
-   
+
     
     
+  },
+
+  mounted() {
+     
   },
 
   data: () => ({
