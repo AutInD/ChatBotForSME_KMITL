@@ -7,6 +7,7 @@ const connection = mysql.createConnection({
     database: "ChatBotForSMEsDB"
 });
 
+
 connection.connect();
 
 module.exports = connection;
