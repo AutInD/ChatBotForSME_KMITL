@@ -1,6 +1,6 @@
 <template>
     <v-app>
-    <div class="no-print">
+    <div >
         <v-app-bar color="gray" dark app class="line">
             <div class="">
                 <v-toolbar-title class="text-uppercase red--text">
@@ -20,7 +20,7 @@
             </v-btn>
         </v-app-bar>
         </div>
-        <div class="no-print">
+        <div class="">
         <v-navigation-drawer v-model="darwer" dark app color="#FF5252">
             <v-list flat>
                 <v-list-item class="mb-3">

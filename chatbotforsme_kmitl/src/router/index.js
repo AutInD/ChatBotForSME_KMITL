@@ -6,6 +6,7 @@ import Order from "../views/Order.vue";
 import popup_upd_pd from "../components/popup_upd_pd.vue"
 import OrderDetails from "../views/OrderDetails.vue";
 import Jamemo from "../views/Jamemo.vue";
+import EditProduct from "../views/EditProduct.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
     path: "/popup_upd_pd/:id",
     name: "popup_upd_pd",
     component: popup_upd_pd,
+  },
+  {
+    path: "/editproduct/:idProduct",
+    name: "EditProduct",
+    component: EditProduct,
   },
   {
     path: "/Sales",

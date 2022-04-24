@@ -1,18 +1,10 @@
 /* eslint-disable */
 <template>
+
   <v-app>
+
     <v-main class="main">
       <h1>จัดการสินค้า</h1>
-      <!-- Messenger ปลั๊กอินแชท Code -->
-      <!-- Messenger ปลั๊กอินแชท Code -->
-    <div id="fb-root"></div>
-
-    <!-- Your ปลั๊กอินแชท code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div>
-
-    
-   
       <v-card class="product">
         <v-card>
           <v-simple-table>
@@ -52,7 +44,7 @@
                   <td>
                     <img src="" alt="" />
                     <v-img
-                      :src="'https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/' + item.Product_Picture"
+                      :src="'https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/' + item.Product_Picture"
                       contain
                       max-height="150"
                       max-width="120"
@@ -64,7 +56,7 @@
                       color="yellow"
                       elevation="2"
                       v-on="on"
-                      :to="'/popup_upd_pd/' + item.idProduct"
+                      :to="'/editproduct/' + item.idProduct"
                       >แก้ไข</v-btn
                     >
 
@@ -84,27 +76,60 @@
           </v-simple-table>
         </v-card>
       </v-card>
+      <div id="fb-root"></div>
+
+    <!-- Your ปลั๊กอินแชท code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
     </v-main>
+    
+
   </v-app>
 </template>
+
+<script>
+
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "110100641400020");
+      chatbox.setAttribute("attribution", "biz_inbox");
+</script>
+
+    <!-- Your SDK code -->
+    <script>
+    
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v13.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/th_TH/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+</script>
 
 <script>
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import Popup from "../components/popup_add_pd.vue";
-import VueFbCustomerChat from 'vue-fb-customer-chat'
 //import upDate from '../components/popup_upd_pd.vue'
+import VueFbCustomerChat from 'vue-fb-customer-chat';
 import Swal from "sweetalert2";
 import moment from "moment";
 moment.locale("th");
 
-Vue.use(VueAxios, axios, Swal);
-Vue.use(VueFbCustomerChat, {
+Vue.use(VueAxios, axios, Swal,VueFbCustomerChat, {
   page_id: 110100641400020, //  change 'null' to your Facebook Page ID,
   theme_color: '#333333', // theme color in HEX
   locale: 'en_US', // default 'en_US'
 });
+
 
 export default {
   name: "home",
@@ -125,7 +150,7 @@ export default {
     },
 
     getData() {
-      axios.get("https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product").then((result) => {
+      axios.get("https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/product").then((result) => {
         console.warn(result);
         this.products = result.data.data;
       });
@@ -146,7 +171,7 @@ export default {
         if (result.isConfirmed) {
           Swal.fire("ลบ!", "ลบสินค้าเรียบร้อยแล้ว", "success")
             .then(() => {
-              axios.delete("https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product/" + idProduct);
+              axios.delete("https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/product/" + idProduct);
               this.getData();
             })
             .then(this.getData());
@@ -162,27 +187,7 @@ export default {
   },
 };
 </script>
-<script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "110100641400020");
-      chatbox.setAttribute("attribution", "biz_inbox");
-</script>
-<script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v13.0'
-        });
-      };
 
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/th_TH/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-</script>
 
 
 

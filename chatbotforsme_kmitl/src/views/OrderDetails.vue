@@ -184,12 +184,12 @@ export default {
 
   async mounted() {
     const result = await axios.get(
-      "https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/orderdetails/" + this.$route.params.id
+      "https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/orderdetails/" + this.$route.params.id
     );
     this.orders = result.data.data;
 
     const result2 = await axios.get(
-      "https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/orderdetailss/" + this.$route.params.id
+      "https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/orderdetailss/" + this.$route.params.id
     );
     this.orders_d = result2.data.data;
   },
@@ -205,13 +205,13 @@ export default {
     },
 
     getData() {
-      axios.get("https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product").then((result) => {
+      axios.get("https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/product").then((result) => {
         console.warn(result);
         this.products = result.data.data;
       });
     },
     getDataOrder() {
-      axios.get("https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/orderdetailss/").then((result2) => {
+      axios.get("https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/orderdetailss/").then((result2) => {
         console.warn(result2);
         this.products = result2.data.data;
       });
@@ -232,7 +232,7 @@ export default {
           order_status.append("Order_Status", "ยืนยันการชำระเงินแล้ว");
           axios
             .post(
-              "https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/update_status/" +
+              "https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/update_status/" +
                 this.$route.params.id,
               order_status,
               {
@@ -261,7 +261,7 @@ export default {
           order_status.append("Order_Status", "ปฎิเสธการชำระเงินโดยผู้ขาย");
           axios
             .post(
-              "https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/update_status/" +
+              "https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/update_status/" +
                 this.$route.params.id,
               order_status,
               {
@@ -281,7 +281,7 @@ export default {
 
       axios
         .post(
-          "https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/update_trackingnumber/" +
+          "https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/update_trackingnumber/" +
             this.$route.params.id,
           formData,
           {

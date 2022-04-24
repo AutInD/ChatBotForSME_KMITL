@@ -9,7 +9,7 @@
             </v-card-title>  
             <div v-for="item in items" v-bind:key="item.idProduct">
                 <v-form  class="px-3">
-                    <v-text-field disabled v-model="item.idProduct" label="รหัสสินค้า" outlined></v-text-field>
+                    <v-text-field disabled v-model="item.idProduc" label="รหัสสินค้า" outlined></v-text-field>
                     <v-text-field v-model="item.Product_Name" label="ชื่อสินค้า" outlined></v-text-field>
                     <v-text-field v-model="item.Product_Count" label="จำนวน" outlined></v-text-field>
                 <v-menu
@@ -63,7 +63,7 @@ import VueAxios from 'vue-axios'
 import Swal from 'sweetalert2'
 Vue.use(VueAxios,axios,Swal)
 export default {
-    name: "popup_upd_pd",
+    name: "",
     components: {
 
     },
@@ -86,7 +86,7 @@ export default {
     },
     async mounted() {
 
-      const result = await axios.get('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product/'+this.$route.params.id)   
+      const result = await axios.get('https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/product/'+this.$route.params.id)   
       this.items=result.data.data   
       
     },
@@ -94,19 +94,8 @@ export default {
 
     methods: {
 
-     getProductById()
-    {
-        
-      axios.get('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product').then((result)=>{
-        console.warn(result)
-        this.products=result.data.data
-       
-      })
-      
-    },
-
         submit(){
-            axios.post('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product:id',this.form).then(() => {
+            axios.post('https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/product:id',this.form).then(() => {
 
                 Swal.fire({
                 
@@ -125,7 +114,7 @@ export default {
         },
     
     mounted() {
-      this.getProductById()
+      
     },
 
     },

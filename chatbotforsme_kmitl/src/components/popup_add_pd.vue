@@ -91,7 +91,7 @@ export default {
         getData()
         
     {
-      axios.get('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/product').then((result)=>{
+      axios.get('https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/product').then((result)=>{
         console.warn(result)
         this.products=result.data.data
       })
@@ -101,8 +101,11 @@ export default {
         submit: function(){
 
             console.log(this.Product_Picture);
-            let formData = new FormData();
 
+              
+            
+
+            let formData = new FormData();
             formData.append('Product_Name',this.form.Product_Name)
             formData.append('Product_Count',this.form.Product_Count)
             formData.append('Product_Expire',this.form.Product_Expire)
@@ -110,14 +113,13 @@ export default {
             formData.append('Product_Detail',this.form.Product_Detail)
             formData.append('Product_Picture',this.Product_Picture)
 
-            axios.post('https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/create_product/',formData,{ 
+             axios.post('https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/create_product/',formData,{ 
 
                     headers: { 
                         'Content-Type': 'multipart/form-data'
                     }
 
                 }).then(() => {
-
                 Swal.fire({
                 
                 icon: 'success',

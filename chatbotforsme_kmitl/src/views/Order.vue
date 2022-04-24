@@ -145,11 +145,12 @@ export default {
       return value === this.StatusFilterValue;
     },
 
-    TrackingFilter(value,Order_Tracking) {
+    TrackingFilter(value) {
       // If this filter has no value we just skip the entire filter.
       if (!this.TrackingFilterValue) {
+
         return true;
-      } else if (Order_Tracking != "ยังไม่มีพัสดุ")
+      }
       // Check if the current loop value (The calories value)
       // equals to the selected value at the <v-select>.
       return value === this.TrackingFilterValue;
@@ -193,7 +194,7 @@ export default {
 
 
     getData() {
-      axios.get("https://7a5c-2403-6200-88a2-46ad-650e-36d4-3826-4972.ngrok.io/api/order").then((result) => {
+      axios.get("https://e621-2403-6200-88a0-3137-187f-3b13-b58c-8fb6.ngrok.io/api/order").then((result) => {
         console.warn(result);
         this.orders = result.data.data;
       });
