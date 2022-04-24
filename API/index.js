@@ -12,12 +12,11 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 app.use(express.static("./upload"));
-
 app.get("/", (req, res) => {
   res.send("This is API Back-End");
   res.setHeader("X-Foo", "bar");
-});
 
+});
 
 app.post("/create_product", (req, res) => {
   //console.log(req.files);
@@ -35,8 +34,6 @@ app.post("/create_product", (req, res) => {
       return res.send(err);
     }
   });
-
-
   //console.log(req.files);
   //console.log(req.body);
   let Product_Name = req.body.Product_Name;
